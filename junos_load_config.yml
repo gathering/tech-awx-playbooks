@@ -13,6 +13,7 @@
       load: 'override'
       format: 'text'
       url: "{{ gondul_url }}/api/templates/hordalan-magic.conf?switch={{sysname}}"
+      timeout: 90
       confirm: 5
       check_commit_wait: 3
      register: response

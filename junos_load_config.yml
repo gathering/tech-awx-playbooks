@@ -16,7 +16,7 @@
       host: "{{ mgmt_v4_addr }}"
       load: 'override'
       format: 'text'
-      url: "{{ gondul_url }}/api/templates/hordalan-magic.conf/?switch={{sysname}}"
+      url: "{{ gondul_url }}/api/templates/hordalan-magic.conf?switch={{sysname}}"
       confirm: 5
       check_commit_wait: 3
      register: response

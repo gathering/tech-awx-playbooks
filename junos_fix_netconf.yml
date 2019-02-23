@@ -8,4 +8,6 @@
    - name: enable netconf service on port 830
      junos_netconf:
       listens_on: 830
+      provider:
+        timeout: 30
       state: present

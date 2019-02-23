@@ -1,0 +1,9 @@
+---
+ - name: roflmao
+   hosts: switches
+   gather_facts: no
+
+   tasks:
+   - name: testlol
+     debug:
+         msg: "test {{ var1 }}"

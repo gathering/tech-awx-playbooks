@@ -2,7 +2,7 @@
  - name: Push config
    hosts: switches
    roles:
-    - Juniper.junos
+    - juniper.junos
    connection: local
    gather_facts: no
 

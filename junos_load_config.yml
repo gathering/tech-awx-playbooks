@@ -1,0 +1,31 @@
+---
+ - name: Push config
+   hosts: switches
+   roles:
+    - Juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+   - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
+     juniper_junos_config:
+      host: "{{ mgmt_v4_addr }}"
+      load: 'override'
+      format: 'text'
+      url: "{{ gondul_url }}/api/templates/hordalan-magic.conf/?switch={{sysname}}"
+      confirm: 5
+      check_commit_wait: 3
+     register: response
+   - name: Print the complete response
+     debug:
+      var: response
+   - name: Confirm the previous commit with a commit check (but no commit)
+     juniper_junos_config:
+      host: "{{ mgmt_v4_addr }}"
+      check: true
+      diff: false
+      commit: false
+     register: response
+   - name: Print the complete response
+     debug:
+      var: response

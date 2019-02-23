@@ -7,6 +7,10 @@
    gather_facts: no
 
    tasks:
+   - name: enable netconf service on port 830
+     junos_netconf:
+      listens_on: 830
+      state: present
    - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
      juniper_junos_config:
       host: "{{ mgmt_v4_addr }}"

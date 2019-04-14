@@ -1,6 +1,6 @@
 ---
  - name: Push config
-   hosts: edge
+   hosts: crew
    roles:
     - juniper.junos
    connection: netconf

@@ -21,7 +21,7 @@
      register: response
    - name: Print the complete response
      debug:
-      var: response
+      var: response.diff_lines
    - name: Confirm the previous commit with a commit check (but no commit)
      juniper_junos_config:
       host: "{{ mgmt_v4_addr }}"
@@ -33,4 +33,4 @@
      register: response
    - name: Print the complete response
      debug:
-      var: response
+      var: response.diff_lines

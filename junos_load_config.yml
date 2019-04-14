@@ -3,7 +3,7 @@
    hosts: crew
    roles:
     - juniper.junos
-   connection: netconf
+   connection: local
    gather_facts: no
 
    tasks:

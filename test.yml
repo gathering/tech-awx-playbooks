@@ -1,6 +1,6 @@
 ---
  - name: roflmao
-   hosts: switches
+   hosts: ansible
    gather_facts: no
 
    tasks:

@@ -34,7 +34,7 @@
       commit: false
       timeout: 90
      register: response
-     
+
    - name: Print the complete response
      debug:
       var: response.diff_lines

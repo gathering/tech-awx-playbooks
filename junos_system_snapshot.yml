@@ -2,7 +2,7 @@
  - name: Request system snapshot slice alternate
    hosts: ansible
    roles:
-    - Juniper.junos
+    - juniper.junos
    connection: local
    gather_facts: no
 

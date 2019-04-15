@@ -19,9 +19,11 @@
       confirm: 5
       check_commit_wait: 10
      register: response
+
    - name: Print the complete response
      debug:
       var: response.diff_lines
+
    - name: Confirm the previous commit with a commit check (but no commit)
      juniper_junos_config:
       host: "{{ mgmt_v4_addr }}"
@@ -31,6 +33,7 @@
       diff: false
       commit: false
      register: response
+     
    - name: Print the complete response
      debug:
       var: response.diff_lines

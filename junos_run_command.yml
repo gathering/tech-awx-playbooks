@@ -13,6 +13,7 @@
        user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
        passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
        commands: "{{ command }}"
+       timeout: 1500
       register: response
 
     - name: Print the complete response

@@ -12,7 +12,7 @@
       host: "{{ mgmt_v4_addr }}"
       user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
       passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
-      load: 'override'
+      load: 'merge'
       format: 'text'
       url: "{{ gondul_url }}/api/templates/template-demo.conf?switch={{sysname}}"
       timeout: 120

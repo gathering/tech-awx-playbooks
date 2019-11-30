@@ -1,0 +1,40 @@
+---
+ - name: Push config
+   hosts: ansible
+   roles:
+    - juniper.junos
+   connection: local
+   gather_facts: no
+
+   tasks:
+   - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
+     juniper_junos_config:
+      host: "{{ mgmt_v4_addr }}"
+      user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+      passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+      load: 'override'
+      format: 'text'
+      url: "{{ gondul_url }}/api/templates/template-demo.conf?switch={{sysname}}"
+      timeout: 120
+      confirm: 5
+      check_commit_wait: 10
+     register: response
+
+   - name: Print the complete response
+     debug:
+      var: response.diff_lines
+
+   - name: Confirm the previous commit with a commit check (but no commit)
+     juniper_junos_config:
+      host: "{{ mgmt_v4_addr }}"
+      user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+      passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+      check: true
+      diff: false
+      commit: false
+      timeout: 90
+     register: response
+
+   - name: Print the complete response
+     debug:
+      var: response.diff_lines

@@ -2,10 +2,25 @@
 - hosts: all
   become: true
   tasks:
-    - name: "Add tech user"
+    - name: Add tech user
       ansible.builtin.user:
-        name: "tech"
+        name: tech
         shell: /bin/bash
         password: "{{ tech_password }}"
-        update_password: "on_create"
+        update_password: on_create
         group: admin
+
+    - name: Add influxdata-archive_compat.key
+      ansible.builtin.get_url:
+        url: "https://repos.influxdata.com/influxdata-archive_compat.key"
+        dest: /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg
+        mode: '0644'
+    - name: Add Influxdata apt repository.
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main"
+        state: present
+        update_cache: true
+    - name: Install telegraf
+      ansible.builtin.apt:
+        name: telegraf
+        state: present

@@ -9,7 +9,6 @@
         password: "{{ tech_password }}"
         update_password: on_create
         group: admin
-
     - name: Install Telegraf
       block:
         - name: Imports influxdb apt key
@@ -29,3 +28,18 @@
           apt:
             pkg: telegraf
             state: present
+        - name: Enable service telegraf
+          ansible.builtin.systemd:
+            name: telegarf
+            enabled: true
+    - name: Configure Telegraf
+      ansible.builtin.template:
+        src: templates/telegraf.j2
+        dest: /etc/telegraf/telegraf.conf
+        mode: '0644'
+      register: telegraf_conf
+    - name: Restart Telegraf if needed
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
+      when: telegraf_conf.changed

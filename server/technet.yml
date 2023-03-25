@@ -10,19 +10,22 @@
         update_password: on_create
         group: admin
 
-    - name: Download influxdata-archive_compat.key
-      ansible.builtin.get_url:
-        url: "https://repos.influxdata.com/influxdata-archive_compat.key"
-        dest: /tmp/influxdata-archive_compat.key
-        mode: '0644'
-    - name: Add influxdata-archive_compat.gpg
-      ansible.builtin.command: echo '393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c influxdata-archive_compat.key' | sha256sum -c && cat /tmp/influxdata-archive_compat.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg > /dev/null
-    - name: Add Influxdata apt repository.
-      ansible.builtin.apt_repository:
-        repo: "deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main"
-        state: present
-        update_cache: true
-    - name: Install telegraf
-      ansible.builtin.apt:
-        name: telegraf
-        state: present
+    - name: Install Telegraf
+      block:
+        - name: Imports influxdb apt key
+          apt_key:
+            url: https://repos.influxdata.com/influxdata-archive_compat.key
+            state: present
+        - name: Installs apt-transport-https
+          apt:
+            pkg: apt-transport-https
+            state: present
+        - name: Adds influxdb repository
+          apt_repository:
+            repo: "deb https://repos.influxdata.com/{{ ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable"
+            state: present
+            update_cache: true
+        - name: Installs telegraf
+          apt:
+            pkg: telegraf
+            state: present

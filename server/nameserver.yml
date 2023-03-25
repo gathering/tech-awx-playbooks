@@ -1,5 +1,5 @@
 ---
-- hosts: all:!dns
+- hosts: all
   become: true
   tasks:
     - name: Set Nameservers for TG23

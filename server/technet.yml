@@ -30,7 +30,7 @@
             state: present
         - name: Enable service telegraf
           ansible.builtin.systemd:
-            name: telegarf
+            name: telegraf
             enabled: true
     - name: Configure Telegraf
       ansible.builtin.template:

@@ -2,26 +2,6 @@
 - hosts: all
   become: true
   tasks:
-    - name: Set Nameservers for TG23
-      block:
-        - name: Remove "resolvconf" package
-          ansible.builtin.apt:
-            name: resolvconf
-            state: absent
-            purge: true
-        - name: Template /etc/resolv.conf
-          ansible.builtin.template:
-            src: templates/resolv.j2
-            dest: /etc/resolv.conf
-            mode: '0644'
-          register: telegraf_conf
-    - name: Add tech user
-      ansible.builtin.user:
-        name: tech
-        shell: /bin/bash
-        password: "{{ tech_password }}"
-        update_password: on_create
-        group: sudo
     - name: Install Telegraf
       block:
         - name: Imports Influxdb Apt Key
@@ -41,7 +21,7 @@
           apt:
             pkg: telegraf
             state: present
-        - name: Enable Telegraf service 
+        - name: Enable Telegraf Service 
           ansible.builtin.systemd:
             name: telegraf
             enabled: true

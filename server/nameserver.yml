@@ -1,0 +1,17 @@
+---
+- hosts: all:!dns
+  become: true
+  tasks:
+    - name: Set Nameservers for TG23
+      block:
+        - name: Remove "resolvconf" package
+          ansible.builtin.apt:
+            name: resolvconf
+            state: absent
+            purge: true
+        - name: Template /etc/resolv.conf
+          ansible.builtin.template:
+            src: templates/resolv.j2
+            dest: /etc/resolv.conf
+            mode: '0644'
+          register: telegraf_conf

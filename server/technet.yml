@@ -8,7 +8,7 @@
         shell: /bin/bash
         password: "{{ tech_password }}"
         update_password: on_create
-        group: admin
+        group: sudo
     - name: Install Telegraf
       block:
         - name: Imports influxdb apt key

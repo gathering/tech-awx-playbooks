@@ -1,10 +1,10 @@
 ---
 - hosts: all
+  become: true
   tasks:
     - name: "Add tech user"
       ansible.builtin.user:
         name: "tech"
-        comment: "Tech:Net Local User"
         shell: /bin/bash
         password: "{{ tech_password }}"
         update_password: "on_create"

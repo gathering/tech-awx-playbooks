@@ -1,11 +1,10 @@
 ---
 - hosts: junos
-  become: true
   gather_facts: no
   connection: local
   collections:
      - juniper.device
-  tasks:
+  juniper.device.tasks:
     - name: collect default set of facts
       facts:
         host: "{{ mgmt_v4_addr }}"

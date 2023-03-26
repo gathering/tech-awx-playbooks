@@ -5,8 +5,11 @@
   collections:
      - juniper.device
   tasks:
-    - name: collect default set of facts
-      juniper.device.facts:
+    - name: collect facts
+      facts:
         host: "{{ mgmt_v4_addr }}"
         user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
         passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+      register: response
+    - debug:
+        var: response.re_name

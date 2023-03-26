@@ -4,9 +4,9 @@
   connection: local
   collections:
      - juniper.device
-  juniper.device.tasks:
+  tasks:
     - name: collect default set of facts
-      facts:
+      juniper.device.facts:
         host: "{{ mgmt_v4_addr }}"
         user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
         passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"

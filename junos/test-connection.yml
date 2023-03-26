@@ -12,4 +12,4 @@
         passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
       register: response
     - debug:
-        var: response.re_name
+        var: response

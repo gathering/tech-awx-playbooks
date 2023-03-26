@@ -21,13 +21,12 @@ jobs:
       - name: Set tags
         run: |
           IMAGE_ID="ghcr.io/${{ github.repository }}"
-          echo "STATIC_TAGS=$IMAGE_ID-junos-ee:latest" >> "$GITHUB_ENV"
-      - name: Build app image
+          echo "TAGS=$IMAGE_ID-junos-ee:latest" >> "$GITHUB_ENV"
+      - name: Build junos-ee image
         uses: docker/build-push-action@v4
         with:
           file: Dockerfile
           context: junos-ee
           push: true
-          tags: ${{ env.APP_TAGS }}
+          tags: ${{ env.TAGS }}
           platforms: linux/amd64
-          target: app

@@ -25,8 +25,8 @@ jobs:
       - name: Build junos-ee image
         uses: docker/build-push-action@v4
         with:
-          file: junos-ee/Dockerfile
           context: junos-ee
+          file: junos-ee/Containerfile
           push: true
           tags: ${{ env.TAGS }}
           platforms: linux/amd64

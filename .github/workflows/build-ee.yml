@@ -1,7 +1,7 @@
 name: Build
 on:
   push:
-    branches: [main, master, tg23-junos]
+    branches: [main, master]
     paths:
       - 'junos-ee/**'
       - '.github/workflows/build-ee.yml'

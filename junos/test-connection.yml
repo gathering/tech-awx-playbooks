@@ -1,0 +1,15 @@
+---
+- hosts: junos
+  gather_facts: no
+  connection: local
+  collections:
+     - juniper.device
+  tasks:
+    - name: collect facts
+      facts:
+        host: "{{ mgmt_v4_addr }}"
+        user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+        passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+      register: response
+    - debug:
+        var: response

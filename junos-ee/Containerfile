@@ -1,0 +1,7 @@
+FROM quay.io/ansible/awx-ee:latest
+
+ADD requirements.yml /tmp/requirements.yml
+ADD requirements.txt /tmp/requirements.txt
+
+RUN python -m pip install -r /tmp/requirements.txt
+RUN ansible-galaxy collection install -r /tmp/requirements.yml

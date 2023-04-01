@@ -4,6 +4,7 @@ on:
     branches: [main, master, tg23-junos]
     paths:
       - 'junos-ee/**'
+      - '.github/workflows/build-ee.yml'
 
 jobs:
   build:

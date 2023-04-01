@@ -1,5 +1,5 @@
 ---
-- hosts: junos
+- hosts: auto-provision
   gather_facts: no
   connection: local
   collections:

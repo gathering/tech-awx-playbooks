@@ -1,0 +1,40 @@
+---
+- name: Push config
+  hosts: auto-provision
+  gather_facts: no
+  connection: local
+  collections:
+     - juniper.device
+
+   tasks:
+   - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
+     config:
+      host: "{{ mgmt_v4_addr }}"
+      user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+      passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+      load: 'override'
+      format: 'text'
+      url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
+      timeout: 120
+      confirm: 2
+      check_commit_wait: 10
+     register: response
+
+   - name: Print the complete response
+     debug:
+      var: response.diff_lines
+
+   - name: Confirm the previous commit with a commit check (but no commit)
+     config:
+      host: "{{ mgmt_v4_addr }}"
+      user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+      passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+      check: true
+      diff: false
+      commit: false
+      timeout: 90
+     register: response
+
+   - name: Print the complete response
+     debug:
+      var: response.diff_lines

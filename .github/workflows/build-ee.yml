@@ -3,7 +3,7 @@ on:
   push:
     branches: [main, master, tg23-junos]
     paths:
-      - "junos-ee/**"
+      - 'junos-ee/**'
 
 jobs:
   build:

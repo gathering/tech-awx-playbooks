@@ -6,7 +6,7 @@
   collections:
      - juniper.device
 
-   tasks:
+  tasks:
    - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
      config:
       host: "{{ mgmt_v4_addr }}"

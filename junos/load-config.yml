@@ -7,6 +7,7 @@
      - juniper.device
 
   tasks:
+  - name: Push Config - Block
     block:
       - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
         config:
@@ -84,10 +85,9 @@
           body_format: json
         run_once: true
         when: hosts | length > 0
+
     rescue:
       - name: Post to Gondul - Failed totally
-        vars:
-          hosts: "{{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
         ansible.builtin.uri:
           url: "{{ gondul_url }}/api/write/oplog"
           user: tech
@@ -96,8 +96,7 @@
           body:
             user: AWX
             systems: ""
-            log: "Failed reFAP job - ID:{{tower_job_id}}"
+            log: "reFAP job failed horribly- ID:{{tower_job_id}}"
           force_basic_auth: true
           body_format: json
         run_once: true
-        when: hosts | length > 0

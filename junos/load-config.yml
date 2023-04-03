@@ -66,7 +66,7 @@
           log: "Successfull reFAP job - ID:{{tower_job_id}}"
         force_basic_auth: true
         body_format: json
-        run_once: true
+      run_once: true
 
     - name: Post to Gondul - Failed
       ansible.builtin.uri:
@@ -80,4 +80,4 @@
           log: "Failed reFAP job - ID:{{tower_job_id}}"
         force_basic_auth: true
         body_format: json
-        run_once: true
+      run_once: true

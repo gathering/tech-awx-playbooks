@@ -7,7 +7,6 @@
      - juniper.device
 
   tasks:
-  - name: Push Config - Block
     block:
       - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
         config:
@@ -52,51 +51,90 @@
         run_once: true
 
     always:
-      - name: Post to Gondul - Successfull
-        vars:
-          hosts: "{{ansible_play_batch |join(',')}}"
-        ansible.builtin.uri:
-          url: "{{ gondul_url }}/api/write/oplog"
-          user: tech
-          password: Sb6CEsyK
-          method: POST
-          body:
-            user: AWX
-            systems: "{{hosts}}"
-            log: "Successfull reFAP job - ID:{{tower_job_id}}"
-          force_basic_auth: true
-          body_format: json
-        run_once: true
-        when: hosts | length > 0
+      - name: always - debug1
+        debug:
+          var: ansible_play_hosts_all
 
-      - name: Post to Gondul - Failed
+      - name: always - debug2
+        debug:
+          var: ansible_play_batch
+
+      - name: always - debug3
+        debug:
+          var: ansible_failed_task
+
+      - name: always - debug4
+        debug:
+          var: ansible_failed_result
+
+      - name: always - Print some debug information
         vars:
-          hosts: "{{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
-        ansible.builtin.uri:
-          url: "{{ gondul_url }}/api/write/oplog"
-          user: tech
-          password: Sb6CEsyK
-          method: POST
-          body:
-            user: AWX
-            systems: "{{ hosts }}"
-            log: "Failed reFAP job - ID:{{tower_job_id}}"
-          force_basic_auth: true
-          body_format: json
-        run_once: true
-        when: hosts | length > 0
+          msg: |
+            Module Variables ("vars"):
+            --------------------------------
+            {{ vars | to_nice_json }}
+
+            Environment Variables ("environment"):
+            --------------------------------
+            {{ environment | to_nice_json }}
+
+            GROUP NAMES Variables ("group_names"):
+            --------------------------------
+            {{ group_names | to_nice_json }}
+
+            GROUPS Variables ("groups"):
+            --------------------------------
+            {{ groups | to_nice_json }}
+
+            HOST Variables ("hostvars"):
+            --------------------------------
+            {{ hostvars | to_nice_json }}
+
+        debug:
+          msg: "{{ msg.split('\n') }}"
+        tags: debug_info
+
 
     rescue:
-      - name: Post to Gondul - Failed totally
-        ansible.builtin.uri:
-          url: "{{ gondul_url }}/api/write/oplog"
-          user: tech
-          password: Sb6CEsyK
-          method: POST
-          body:
-            user: AWX
-            systems: ""
-            log: "reFAP job failed horribly- ID:{{tower_job_id}}"
-          force_basic_auth: true
-          body_format: json
-        run_once: true
+      - name: rescue - debug1
+        debug:
+          var: ansible_play_hosts_all
+
+      - name: rescue -  debug2
+        debug:
+          var: ansible_play_batch
+
+      - name: rescue -  debug3
+        debug:
+          var: ansible_failed_task
+
+      - name: rescue -  debug4
+        debug:
+          var: ansible_failed_result
+
+      - name: rescue - Print some debug information
+        vars:
+          msg: |
+            Module Variables ("vars"):
+            --------------------------------
+            {{ vars | to_nice_json }}
+
+            Environment Variables ("environment"):
+            --------------------------------
+            {{ environment | to_nice_json }}
+
+            GROUP NAMES Variables ("group_names"):
+            --------------------------------
+            {{ group_names | to_nice_json }}
+
+            GROUPS Variables ("groups"):
+            --------------------------------
+            {{ groups | to_nice_json }}
+
+            HOST Variables ("hostvars"):
+            --------------------------------
+            {{ hostvars | to_nice_json }}
+
+        debug:
+          msg: "{{ msg.split('\n') }}"
+        tags: debug_info

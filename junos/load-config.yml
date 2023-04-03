@@ -55,6 +55,8 @@
       run_once: true
 
     - name: Post to Gondul - Successfull
+      vars:
+        hosts: "{{ansible_play_batch |join(',')}}"
       ansible.builtin.uri:
         url: "{{ gondul_url }}/api/write/oplog"
         user: tech
@@ -62,13 +64,16 @@
         method: POST
         body:
           user: AWX
-          systems: "{{ansible_play_batch |join(',')}}"
+          systems: "{{hosts}}"
           log: "Successfull reFAP job - ID:{{tower_job_id}}"
         force_basic_auth: true
         body_format: json
       run_once: true
+      when: hosts | length > 0
 
     - name: Post to Gondul - Failed
+      vars:
+        hosts: "{{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
       ansible.builtin.uri:
         url: "{{ gondul_url }}/api/write/oplog"
         user: tech
@@ -76,8 +81,9 @@
         method: POST
         body:
           user: AWX
-          systems: "{{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
+          systems: "{{ hosts }}"
           log: "Failed reFAP job - ID:{{tower_job_id}}"
         force_basic_auth: true
         body_format: json
       run_once: true
+      when: hosts | length > 0

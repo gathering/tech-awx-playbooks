@@ -54,7 +54,7 @@
       always:
         - name: always - debug1
           debug:
-            var: ansible_play_hosts_all
+            var: ansible_play_hosts
           run_once: true
 
         - name: always - debug2
@@ -76,7 +76,7 @@
       rescue:
         - name: rescue - debug1
           debug:
-            var: ansible_play_hosts_all
+            var: ansible_play_hosts
           run_once: true
 
         - name: rescue -  debug2

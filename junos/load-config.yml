@@ -7,134 +7,136 @@
      - juniper.device
 
   tasks:
-    block:
-      - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
-        config:
-          host: "{{ mgmt_v4_addr }}"
-          user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
-          passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
-          load: 'override'
-          format: 'text'
-          url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
-          timeout: 240
-          confirm: 4
-          check_commit_wait: 6
-        register: response
-
-      - name: Print the complete response
-        debug:
-          var: response.diff_lines
-
-      - name: Confirm the previous commit with a commit check (but no commit)
-        config:
-          host: "{{ mgmt_v4_addr }}"
-          user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
-          passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
-          check: true
-          diff: false
-          commit: false
-          timeout: 90
-        register: response
-
-      - name: Print the complete response
-        debug:
-          var: response.diff_lines
-
-      - name: Print play hosts that FAP'd
-        debug:
-          msg: "{{ansible_play_batch |join(',')}}"
-        run_once: true
-
-      - name: Print play hosts that failed
-        debug:
-          msg: "The hosts that failed are {{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
-        run_once: true
-
-    always:
-      - name: always - debug1
-        debug:
-          var: ansible_play_hosts_all
-
-      - name: always - debug2
-        debug:
-          var: ansible_play_batch
-
-      - name: always - debug3
-        debug:
-          var: ansible_failed_task
-
-      - name: always - debug4
-        debug:
-          var: ansible_failed_result
-
-      - name: always - Print some debug information
-        vars:
-          msg: |
-            Module Variables ("vars"):
-            --------------------------------
-            {{ vars | to_nice_json }}
-
-            Environment Variables ("environment"):
-            --------------------------------
-            {{ environment | to_nice_json }}
-
-            GROUP NAMES Variables ("group_names"):
-            --------------------------------
-            {{ group_names | to_nice_json }}
-
-            GROUPS Variables ("groups"):
-            --------------------------------
-            {{ groups | to_nice_json }}
-
-            HOST Variables ("hostvars"):
-            --------------------------------
-            {{ hostvars | to_nice_json }}
-
-        debug:
-          msg: "{{ msg.split('\n') }}"
-        tags: debug_info
-
-
-    rescue:
-      - name: rescue - debug1
-        debug:
-          var: ansible_play_hosts_all
-
-      - name: rescue -  debug2
-        debug:
-          var: ansible_play_batch
-
-      - name: rescue -  debug3
-        debug:
-          var: ansible_failed_task
-
-      - name: rescue -  debug4
-        debug:
-          var: ansible_failed_result
-
-      - name: rescue - Print some debug information
-        vars:
-          msg: |
-            Module Variables ("vars"):
-            --------------------------------
-            {{ vars | to_nice_json }}
-
-            Environment Variables ("environment"):
-            --------------------------------
-            {{ environment | to_nice_json }}
-
-            GROUP NAMES Variables ("group_names"):
-            --------------------------------
-            {{ group_names | to_nice_json }}
-
-            GROUPS Variables ("groups"):
-            --------------------------------
-            {{ groups | to_nice_json }}
-
-            HOST Variables ("hostvars"):
-            --------------------------------
-            {{ hostvars | to_nice_json }}
-
-        debug:
-          msg: "{{ msg.split('\n') }}"
-        tags: debug_info
+    - name: Block - Push Config
+      block:
+        - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
+          config:
+            host: "{{ mgmt_v4_addr }}"
+            user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+            passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+            load: 'override'
+            format: 'text'
+            url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
+            timeout: 240
+            confirm: 4
+            check_commit_wait: 6
+          register: response
+  
+        - name: Print the complete response
+          debug:
+            var: response.diff_lines
+  
+        - name: Confirm the previous commit with a commit check (but no commit)
+          config:
+            host: "{{ mgmt_v4_addr }}"
+            user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+            passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+            check: true
+            diff: false
+            commit: false
+            timeout: 90
+          register: response
+  
+        - name: Print the complete response
+          debug:
+            var: response.diff_lines
+  
+        - name: Print play hosts that FAP'd
+          debug:
+            msg: "{{ansible_play_batch |join(',')}}"
+          run_once: true
+  
+        - name: Print play hosts that failed
+          debug:
+            msg: "The hosts that failed are {{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
+          run_once: true
+  
+      always:
+        - name: always - debug1
+          debug:
+            var: ansible_play_hosts_all
+  
+        - name: always - debug2
+          debug:
+            var: ansible_play_batch
+  
+        - name: always - debug3
+          debug:
+            var: ansible_failed_task
+  
+        - name: always - debug4
+          debug:
+            var: ansible_failed_result
+  
+        - name: always - Print some debug information
+          vars:
+            msg: |
+              Module Variables ("vars"):
+              --------------------------------
+              {{ vars | to_nice_json }}
+  
+              Environment Variables ("environment"):
+              --------------------------------
+              {{ environment | to_nice_json }}
+  
+              GROUP NAMES Variables ("group_names"):
+              --------------------------------
+              {{ group_names | to_nice_json }}
+  
+              GROUPS Variables ("groups"):
+              --------------------------------
+              {{ groups | to_nice_json }}
+  
+              HOST Variables ("hostvars"):
+              --------------------------------
+              {{ hostvars | to_nice_json }}
+  
+          debug:
+            msg: "{{ msg.split('\n') }}"
+          tags: debug_info
+  
+  
+      rescue:
+        - name: rescue - debug1
+          debug:
+            var: ansible_play_hosts_all
+  
+        - name: rescue -  debug2
+          debug:
+            var: ansible_play_batch
+  
+        - name: rescue -  debug3
+          debug:
+            var: ansible_failed_task
+  
+        - name: rescue -  debug4
+          debug:
+            var: ansible_failed_result
+  
+        - name: rescue - Print some debug information
+          vars:
+            msg: |
+              Module Variables ("vars"):
+              --------------------------------
+              {{ vars | to_nice_json }}
+  
+              Environment Variables ("environment"):
+              --------------------------------
+              {{ environment | to_nice_json }}
+  
+              GROUP NAMES Variables ("group_names"):
+              --------------------------------
+              {{ group_names | to_nice_json }}
+  
+              GROUPS Variables ("groups"):
+              --------------------------------
+              {{ groups | to_nice_json }}
+  
+              HOST Variables ("hostvars"):
+              --------------------------------
+              {{ hostvars | to_nice_json }}
+  
+          debug:
+            msg: "{{ msg.split('\n') }}"
+          tags: debug_info
+  

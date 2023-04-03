@@ -39,7 +39,12 @@
       debug:
         var: response.diff_lines
 
-    - name: Print Hosts in list
+    - name: Print play hosts that FAP'd
       debug:
         var: play_hosts
+      run_once: true
+
+    - name: Print play hosts that failed
+      debug:
+        msg: "The hosts that failed are {{ ansible_play_hosts_all| difference(ansible_play_batch) |join('\n') }}"
       run_once: true

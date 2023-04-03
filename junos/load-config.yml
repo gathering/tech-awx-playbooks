@@ -7,89 +7,31 @@
      - juniper.device
 
   tasks:
-    - name: Block - Push Config
-      block:
-        - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
-          config:
-            host: "{{ mgmt_v4_addr }}"
-            user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
-            passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
-            load: 'override'
-            format: 'text'
-            url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
-            timeout: 240
-            confirm: 4
-            check_commit_wait: 6
-          register: response
+    - name: Load conf. Confirm within 5 min. Wait 3 secs between chk and commit
+      config:
+        host: "{{ mgmt_v4_addr }}"
+        user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+        passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+        load: 'override'
+        format: 'text'
+        url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
+        timeout: 240
+        confirm: 4
+        check_commit_wait: 6
+      register: response
 
-        - name: Print the complete response
-          debug:
-            var: response.diff_lines
+    - name: Print the complete response
+      debug:
+        var: response.diff_lines
 
-        - name: Confirm the previous commit with a commit check (but no commit)
-          config:
-            host: "{{ mgmt_v4_addr }}"
-            user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
-            passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
-            check: true
-            diff: false
-            commit: false
-            timeout: 90
-          register: response
+    - name: Confirm the previous commit with a commit check (but no commit)
+      config:
+        host: "{{ mgmt_v4_addr }}"
+        user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+        passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+        check: true
+        diff: false
+        commit: false
+        timeout: 90
+      register: response
 
-        - name: Print the complete response
-          debug:
-            var: response.diff_lines
-
-        - name: Print play hosts that FAP'd
-          debug:
-            msg: "{{ansible_play_batch |join(',')}}"
-          run_once: true
-
-        - name: Print play hosts that failed
-          debug:
-            msg: "The hosts that failed are {{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
-          run_once: true
-
-      always:
-        - name: always - debug1
-          debug:
-            var: ansible_play_hosts
-          run_once: true
-
-        - name: always - debug2
-          debug:
-            var: ansible_play_batch
-          run_once: true
-
-        - name: always - debug3
-          debug:
-            var: ansible_failed_task
-          run_once: true
-
-        - name: always - debug4
-          debug:
-            var: ansible_failed_result
-          run_once: true
-
-
-      rescue:
-        - name: rescue - debug1
-          debug:
-            var: ansible_play_hosts
-          run_once: true
-
-        - name: rescue -  debug2
-          debug:
-            var: ansible_play_batch
-          run_once: true
-
-        - name: rescue -  debug3
-          debug:
-            var: ansible_failed_task
-          run_once: true
-
-        - name: rescue -  debug4
-          debug:
-            var: ansible_failed_result
-          run_once: true

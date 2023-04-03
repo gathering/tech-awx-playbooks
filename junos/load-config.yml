@@ -41,10 +41,43 @@
 
     - name: Print play hosts that FAP'd
       debug:
-        var: play_hosts
+        msg: "{{ansible_play_batch |join(',')}}"
       run_once: true
 
     - name: Print play hosts that failed
       debug:
-        msg: "The hosts that failed are {{ ansible_play_hosts_all| difference(ansible_play_batch) |join('\n') }}"
+        msg: "The hosts that failed are {{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
       run_once: true
+
+    - name: debug 1
+      debug:
+        var: ansible_play_hosts_all
+      run_once: true
+
+    - name: Post to Gondul - Successfull
+      ansible.builtin.uri:
+        url: "{{ gondul_url }}/api/write/oplog"
+        user: tech
+        password: Sb6CEsyK
+        method: POST
+        body:
+          user: AWX
+          systems: "{{ansible_play_batch |join(',')}}"
+          log: "Successfull reFAP job - ID:{{tower_job_id}}"
+        force_basic_auth: true
+        body_format: json
+        run_once: true
+
+    - name: Post to Gondul - Failed
+      ansible.builtin.uri:
+        url: "{{ gondul_url }}/api/write/oplog"
+        user: tech
+        password: Sb6CEsyK
+        method: POST
+        body:
+          user: AWX
+          systems: "{{ ansible_play_hosts_all| difference(ansible_play_batch) |join(',') }}"
+          log: "Failed reFAP job - ID:{{tower_job_id}}"
+        force_basic_auth: true
+        body_format: json
+        run_once: true

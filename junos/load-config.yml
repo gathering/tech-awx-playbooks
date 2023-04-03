@@ -15,9 +15,9 @@
         load: 'override'
         format: 'text'
         url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
-        timeout: 120
-        confirm: 2
-        check_commit_wait: 3
+        timeout: 240
+        confirm: 4
+        check_commit_wait: 6
       register: response
 
     - name: Print the complete response

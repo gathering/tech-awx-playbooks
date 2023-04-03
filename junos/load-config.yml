@@ -55,33 +55,41 @@
         - name: always - debug1
           debug:
             var: ansible_play_hosts_all
+          run_once: true
 
         - name: always - debug2
           debug:
             var: ansible_play_batch
+          run_once: true
 
         - name: always - debug3
           debug:
             var: ansible_failed_task
+          run_once: true
 
         - name: always - debug4
           debug:
             var: ansible_failed_result
+          run_once: true
 
 
       rescue:
         - name: rescue - debug1
           debug:
             var: ansible_play_hosts_all
+          run_once: true
 
         - name: rescue -  debug2
           debug:
             var: ansible_play_batch
+          run_once: true
 
         - name: rescue -  debug3
           debug:
             var: ansible_failed_task
+          run_once: true
 
         - name: rescue -  debug4
           debug:
             var: ansible_failed_result
+          run_once: true

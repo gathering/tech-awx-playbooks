@@ -2,6 +2,7 @@
 - name: Push config
   hosts: auto-provision
   gather_facts: no
+  strategy: free
   connection: local
   collections:
      - juniper.device
@@ -34,4 +35,3 @@
         commit: false
         timeout: 120
       register: response
-

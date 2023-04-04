@@ -7,7 +7,7 @@
      - juniper.device
 
   tasks:
-    - name: Load conf. Confirm within 5 min. Wait 4 secs between chk and commit
+    - name: Load conf. Confirm within 10 min. Wait 6 secs between chk and commit
       config:
         host: "{{ mgmt_v4_addr }}"
         user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
@@ -15,8 +15,8 @@
         load: 'override'
         format: 'text'
         url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
-        timeout: 120
-        confirm: 4
+        timeout: 240
+        confirm: 10
         check_commit_wait: 6
       register: response
 
@@ -32,6 +32,6 @@
         check: true
         diff: false
         commit: false
-        timeout: 90
+        timeout: 120
       register: response
 

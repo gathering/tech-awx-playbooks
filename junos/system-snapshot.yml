@@ -32,7 +32,7 @@
 
     - name: Print the command output of each.
       debug:
-        var: item.stdout
+        var: item
       with_items: "{{ response }}"
 
     # - name: Execute request system snapshot slice alternate

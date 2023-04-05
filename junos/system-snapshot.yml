@@ -33,7 +33,7 @@
     - name: Print the command output of each.
       debug:
         var: item.stdout
-      with_items: "{{ response.results }}"
+      with_items: "{{ response }}"
 
     # - name: Execute request system snapshot slice alternate
     #   when: response.parsed_output["multi-routing-engine-results"]["multi-routing-engine-item"]["snapshot-information"]["software-version"].0.package.1["package-version"] != response.parsed_output["multi-routing-engine-results"]["multi-routing-engine-item"]["snapshot-information"]["software-version"].1.package.1["package-version"]

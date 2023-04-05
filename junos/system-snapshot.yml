@@ -30,9 +30,14 @@
           - "json"
       register: response
 
-    - name: Print the command output of each.
+    - name: Print the command output of each. 0
       debug:
-        var: response.parsed_output
+        var: response.parsed_output["snapshot-information"]["software-version"].0.package.1["package-version"]
+
+  
+    - name: Print the command output of each. 1
+      debug:
+        var: response.parsed_output["snapshot-information"]["software-version"].1.package.1["package-version"]
 
     # - name: Execute request system snapshot slice alternate
     #   when: response.parsed_output["multi-routing-engine-results"]["multi-routing-engine-item"]["snapshot-information"]["software-version"].0.package.1["package-version"] != response.parsed_output["multi-routing-engine-results"]["multi-routing-engine-item"]["snapshot-information"]["software-version"].1.package.1["package-version"]

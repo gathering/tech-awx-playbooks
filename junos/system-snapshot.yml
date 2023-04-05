@@ -1,6 +1,8 @@
 ---
-- hosts: auto-provision
+- name: Check system snapshot slice alternate
+  hosts: auto-provision
   gather_facts: no
+  strategy: free
   connection: local
   collections:
      - juniper.device

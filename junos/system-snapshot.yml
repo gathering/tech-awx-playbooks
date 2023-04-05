@@ -29,12 +29,12 @@
         formats:
           - "json"
       register: response
-
-     - name: Execute request system snapshot slice alternate
-       when: response.parsed_output["snapshot-information"]["software-version"].0.package.1["package-version"] != response.parsed_output["snapshot-information"]["software-version"].1.package.1["package-version"]
-       command:
-         host: "{{ mgmt_v4_addr }}"
-         user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
-         passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
-         commands: "request system snapshot slice alternate"
-         timeout: 1500
+      
+    - name: Execute request system snapshot slice alternate
+      when: response.parsed_output["snapshot-information"]["software-version"].0.package.1["package-version"] != response.parsed_output["snapshot-information"]["software-version"].1.package.1["package-version"]
+      command:
+        host: "{{ mgmt_v4_addr }}"
+        user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+        passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+        commands: "request system snapshot slice alternate"
+        timeout: 2000

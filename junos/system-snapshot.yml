@@ -31,7 +31,7 @@
       register: response
       
     - name: Execute request system snapshot slice alternate
-      when: response.parsed_output["snapshot-information"].0["software-version"].0.package.0["package-version"] != response.parsed_output["snapshot-information"].0["software-version"].1.package.1["package-version"]
+      when: response.parsed_output["snapshot-information"].0["software-version"].0.package.0["package-version"] != response.parsed_output["snapshot-information"].0["software-version"].0.package.1["package-version"]
       command:
         host: "{{ mgmt_v4_addr }}"
         user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"

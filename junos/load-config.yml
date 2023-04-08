@@ -1,6 +1,6 @@
 ---
 - name: Push config
-  hosts: auto-provision
+  hosts: auto-provision:!maint
   gather_facts: no
   strategy: free
   connection: local

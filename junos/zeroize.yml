@@ -1,0 +1,22 @@
+---
+- name: zeroize
+  hosts: all
+  gather_facts: no
+  strategy: free
+  connection: local
+  collections:
+     - juniper.device
+
+  tasks:
+    - name: Load conf. Confirm within 10 min. Wait 6 secs between chk and commit
+      command:
+        commands:
+          - request system zeroize
+        host: "{{ mgmt_v4_addr }}"
+        user: "{{ lookup('env','ANSIBLE_NET_USERNAME') }}"
+        passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
+      register: response
+
+    - name: Print the complete response
+      debug:
+        var: response

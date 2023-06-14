@@ -1,0 +1,38 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install Telegraf
+      block:
+        - name: Imports Influxdb Apt Key
+          apt_key:
+            url: https://repos.influxdata.com/influxdata-archive_compat.key
+            state: present
+        - name: Installs apt-transport-https
+          apt:
+            pkg: apt-transport-https
+            state: present
+        - name: Adds influxdb repository
+          apt_repository:
+            repo: "deb https://repos.influxdata.com/{{ ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable"
+            state: present
+            update_cache: true
+        - name: Installs Telegraf
+          apt:
+            pkg: telegraf
+            state: present
+        - name: Enable Telegraf Service 
+          ansible.builtin.systemd:
+            name: telegraf
+            enabled: true
+    - name: Configure Telegraf
+      ansible.builtin.template:
+        src: templates/telegraf.j2
+        dest: /etc/telegraf/telegraf.conf
+        mode: '0644'
+      register: telegraf_conf
+    - name: Restart Telegraf if needed
+      ansible.builtin.systemd:
+        name: telegraf
+        state: restarted
+      when: telegraf_conf.changed

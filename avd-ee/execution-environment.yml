@@ -5,6 +5,8 @@ images:
     name: registry.fedoraproject.org/fedora:41
 
 dependencies:
+  system:
+  - python3-devel
   python_interpreter:
     package_system: python313
     python_path: /usr/bin/python3.13

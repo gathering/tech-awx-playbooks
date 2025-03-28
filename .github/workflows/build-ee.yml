@@ -1,7 +1,7 @@
 name: Build
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, ansible-builder]
     paths:
       - 'junos-ee/**'
       - 'avd-ee/**'

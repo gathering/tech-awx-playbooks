@@ -1,0 +1,7 @@
+pyavd[ansible-collection]
+anta
+cvprac
+netaddr
+treelib
+jsonschema
+pynetbox

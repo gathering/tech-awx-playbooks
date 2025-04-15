@@ -1,7 +1,7 @@
 name: Build
 on:
   push:
-    branches: [main, master, ansible-builder]
+    branches: [main, master]
     paths:
       - 'junos-ee/**'
       - 'avd-ee/**'
@@ -29,3 +29,8 @@ jobs:
         run: |
           ansible-builder build --container-runtime docker -v 3 --tag ghcr.io/${{ github.repository }}-avd-ee:latest
           docker push ghcr.io/${{ github.repository }}-avd-ee:latest
+      - name: Build avd-ee image
+        working-directory: ./junos-ee
+        run: |
+          ansible-builder build --container-runtime docker -v 3 --tag ghcr.io/${{ github.repository }}-junos-ee:latest
+          docker push ghcr.io/${{ github.repository }}-junos-ee:latest

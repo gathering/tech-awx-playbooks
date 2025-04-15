@@ -29,7 +29,7 @@ jobs:
         run: |
           ansible-builder build --container-runtime docker -v 3 --tag ghcr.io/${{ github.repository }}-avd-ee:latest
           docker push ghcr.io/${{ github.repository }}-avd-ee:latest
-      - name: Build avd-ee image
+      - name: Build junos-ee image
         working-directory: ./junos-ee
         run: |
           ansible-builder build --container-runtime docker -v 3 --tag ghcr.io/${{ github.repository }}-junos-ee:latest

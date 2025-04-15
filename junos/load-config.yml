@@ -1,6 +1,6 @@
 ---
 - name: Push config
-  hosts: auto-provision:!maint
+  hosts: all
   gather_facts: no
   strategy: free
   connection: local
@@ -15,7 +15,7 @@
         passwd: "{{ lookup('env','ANSIBLE_NET_PASSWORD') }}"
         load: 'override'
         format: 'text'
-        url: "{{ gondul_url }}/api/templates/magic.conf?switch={{sysname}}"
+        url: "{{ gondul_url }}/{{sysname}}"
         timeout: 240
         confirm: 10
         check_commit_wait: 6

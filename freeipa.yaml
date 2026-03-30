@@ -2,7 +2,6 @@
 - hosts: all
   become: true
   tasks:
-    - include_vars: credentials.yml
     - name: Install freeipa-client
       apt:
         name: freeipa-client

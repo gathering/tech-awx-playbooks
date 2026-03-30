@@ -25,4 +25,4 @@
 
       - name: Run freeipa-client-install
         command: >
-          ipa-client-install --domain {{ lookup('ansible.builtin.env', IPA_DOMAIN) }} }} --principal {{ ipa_principal }} --password {{ ipa_password }} --mkhomedir --hostname {{ inventory_hostname }} --unattended
+          ipa-client-install --domain {{ lookup('ansible.builtin.env', 'IPA_DOMAIN') }} }} --principal {{ ipa_principal }} --password {{ ipa_password }} --mkhomedir --hostname {{ inventory_hostname }} --unattended

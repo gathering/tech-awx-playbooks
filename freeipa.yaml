@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - include_vars: credentials.yml
+    - name: Install freeipa-client
+      apt:
+        name: freeipa-client
+        state: present
+
+    - name: Check if host is enrolled
+      tags:
+        - enroll
+        - freeipaclient
+      register: freeipaclient_ipaconf
+      check_mode: no
+      stat:
+        path: /etc/ipa/default.conf
+
+    - name: "Set host/run freeipa-client-install if not already done"
+      when: not freeipaclient_ipaconf.stat.exists
+      block:
+      - name: "Set fqdn if missing"
+        hostname:
+          name: "{{ inventory_hostname }}"
+
+      - name: Run freeipa-client-install
+        command: >
+          ipa-client-install --domain {{ ipa_domain }} --principal {{ ipa_principal }} --password {{ ipa_password }} --mkhomedir --hostname {{ inventory_hostname }} --unattended
